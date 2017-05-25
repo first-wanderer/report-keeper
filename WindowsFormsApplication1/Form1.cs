@@ -8,7 +8,7 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
         DateTime _start;
-
+        DateTime _start_day;
         private const int CP_NOCLOSE_BUTTON = 0x200;
         protected override CreateParams CreateParams
         {
@@ -24,6 +24,7 @@ namespace WindowsFormsApplication1
             InitializeComponent();
             this.ShowInTaskbar = false;
             this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
+            _start_day = DateTime.Now;
             _start = DateTime.Now;
 
             this.projectTaskComboBox.Items.Add("Internal.Estimation");
@@ -62,8 +63,8 @@ namespace WindowsFormsApplication1
                 this.desc.Text = "";
                 this.time.Text = "1.0";
                 this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
-
                 this.WindowState = FormWindowState.Minimized;
+                this._start = DateTime.Now;
             }
         }
 
@@ -74,14 +75,21 @@ namespace WindowsFormsApplication1
             this.Focus();
             this.Activate();
             TimeSpan elapsed = DateTime.Now - this._start;
-            this.time1.Text = elapsed.Hours + ":" + elapsed.Minutes.ToString("D2");
+            this.time.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
+            TimeSpan elapsed_day = DateTime.Now - this._start_day;
+            this.time1.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
+
         }
 
 
         private void timer2_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsed = DateTime.Now - this._start;
-            this.time1.Text = elapsed.Hours + ":" + elapsed.Minutes.ToString("D2");
+            this.time1.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
+
+            TimeSpan elapsed_day = DateTime.Now - this._start_day;
+            this.time1.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
+
         }
     }
 }
