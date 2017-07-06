@@ -3,9 +3,9 @@ using System.IO;
 using System.Windows.Forms;
 
 
-namespace WindowsFormsApplication1
+namespace ReportKeeperApplication
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         DateTime _start;
         DateTime _start_day;
@@ -19,7 +19,7 @@ namespace WindowsFormsApplication1
                 return myCp;
             }
         }
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             this.ShowInTaskbar = false;
