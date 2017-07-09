@@ -40,8 +40,11 @@ namespace ReportKeeperApplication
             this.saveButton = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.time1 = new System.Windows.Forms.Label();
+            this.workedTime = new System.Windows.Forms.Label();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.trackedTime = new System.Windows.Forms.Label();
+            this.WorkedLabel = new System.Windows.Forms.Label();
+            this.TrackedLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -99,26 +102,59 @@ namespace ReportKeeperApplication
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.Click += new System.EventHandler(this.timer1_Tick);
             // 
-            // time1
+            // workedTime
             // 
-            this.time1.AutoSize = true;
-            this.time1.Font = new System.Drawing.Font("Arial", 45F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.time1.Location = new System.Drawing.Point(468, 10);
-            this.time1.Name = "time1";
-            this.time1.Size = new System.Drawing.Size(110, 50);
-            this.time1.TabIndex = 7;
-            this.time1.Text = "0:00";
+            this.workedTime.AutoSize = true;
+            this.workedTime.Font = new System.Drawing.Font("Arial", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.workedTime.Location = new System.Drawing.Point(468, 22);
+            this.workedTime.Name = "workedTime";
+            this.workedTime.Size = new System.Drawing.Size(74, 35);
+            this.workedTime.TabIndex = 7;
+            this.workedTime.Text = "0:00";
             // 
             // timer2
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // trackedTime
+            // 
+            this.trackedTime.AutoSize = true;
+            this.trackedTime.Font = new System.Drawing.Font("Arial", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.trackedTime.Location = new System.Drawing.Point(548, 22);
+            this.trackedTime.Name = "trackedTime";
+            this.trackedTime.Size = new System.Drawing.Size(32, 35);
+            this.trackedTime.TabIndex = 8;
+            this.trackedTime.Text = "0";
+            // 
+            // WorkedLabel
+            // 
+            this.WorkedLabel.AutoSize = true;
+            this.WorkedLabel.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.WorkedLabel.Location = new System.Drawing.Point(471, 5);
+            this.WorkedLabel.Name = "WorkedLabel";
+            this.WorkedLabel.Size = new System.Drawing.Size(63, 17);
+            this.WorkedLabel.TabIndex = 9;
+            this.WorkedLabel.Text = "Worked:";
+            // 
+            // TrackedLabel
+            // 
+            this.TrackedLabel.AutoSize = true;
+            this.TrackedLabel.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.TrackedLabel.Location = new System.Drawing.Point(551, 5);
+            this.TrackedLabel.Name = "TrackedLabel";
+            this.TrackedLabel.Size = new System.Drawing.Size(64, 17);
+            this.TrackedLabel.TabIndex = 10;
+            this.TrackedLabel.Text = "Tracked:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(575, 69);
-            this.Controls.Add(this.time1);
+            this.ClientSize = new System.Drawing.Size(625, 69);
+            this.Controls.Add(this.TrackedLabel);
+            this.Controls.Add(this.WorkedLabel);
+            this.Controls.Add(this.trackedTime);
+            this.Controls.Add(this.workedTime);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.projectTaskComboBox);
             this.Controls.Add(this.date);
@@ -143,8 +179,11 @@ namespace ReportKeeperApplication
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.Label time1;
+        private System.Windows.Forms.Label workedTime;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Label trackedTime;
+        private System.Windows.Forms.Label WorkedLabel;
+        private System.Windows.Forms.Label TrackedLabel;
     }
 }
 

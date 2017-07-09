@@ -10,6 +10,17 @@ namespace ReportKeeperApplication
         DateTime _start;
         DateTime _start_day;
         private const int CP_NOCLOSE_BUTTON = 0x200;
+        private const string PROJECT_SETTING_NAME = "Projects:";
+        private string MY_DOC_PATH = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private float trackedCounter = 0;
+        private string[] DEFAULT_PROJECTS = { "Internal.Communication",
+                                                "Internal.Development",
+                                                "Internal.Investigation",
+                                                "Internal.Testing",
+                                                "Internal.Estimation",
+                                                "Internal.Administration",
+                                                "Internal.Code review" };
+
         protected override CreateParams CreateParams
         {
             get
@@ -27,16 +38,8 @@ namespace ReportKeeperApplication
             _start_day = DateTime.Now;
             _start = DateTime.Now;
 
-            this.projectTaskComboBox.Items.Add("Internal.Estimation");
+            this.readingSettings();
 
-            this.projectTaskComboBox.Items.Add("Axapta build.Bugfixing");
-            this.projectTaskComboBox.Items.Add("Axapta build.Code review");
-            this.projectTaskComboBox.Items.Add("Axapta build.Communication");
-            this.projectTaskComboBox.Items.Add("Axapta build.Development");
-            this.projectTaskComboBox.Items.Add("Axapta build.Estimation");
-            this.projectTaskComboBox.Items.Add("Axapta build.Investigation");
-            this.projectTaskComboBox.Items.Add("Axapta build.Testing");
-            this.projectTaskComboBox.Items.Add("Axapta build.Configuration");
             this.time.Text = "1.0";
 
             this.timer1.Interval = 3600000;
@@ -50,21 +53,25 @@ namespace ReportKeeperApplication
         {
             if (this.projectTaskComboBox.SelectedItem.ToString() != "" && this.desc.Text != "" && this.time.Text != "" && this.date.Text != "")
             {
-                string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string taskDuration = this.time.Text;
+                taskDuration = taskDuration.Contains(",") ? taskDuration.Replace(",", ".") : taskDuration;
 
-                string[] line = { this.projectTaskComboBox.SelectedItem.ToString() + ","
-                            + this.time.Text + ","
+                string[] newReportRecord = { this.projectTaskComboBox.SelectedItem.ToString() + ","
+                            + taskDuration + ","
                             + "\""+this.desc.Text + "\","
                             + this.date.Text + ","
                             + this.date.Text };
 
-                File.AppendAllLines(mydocpath + @"\timereport.csv", line);
+                File.AppendAllLines(MY_DOC_PATH + @"\timereport.csv", newReportRecord);
 
                 this.desc.Text = "";
                 this.time.Text = "1.0";
                 this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
                 this.WindowState = FormWindowState.Minimized;
                 this._start = DateTime.Now;
+
+                trackedCounter += float.Parse(taskDuration);
+                this.trackedTime.Text = trackedCounter.ToString();
             }
         }
 
@@ -77,19 +84,49 @@ namespace ReportKeeperApplication
             TimeSpan elapsed = DateTime.Now - this._start;
             this.time.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
-            this.time1.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
-
+            this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
         }
 
 
         private void timer2_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsed = DateTime.Now - this._start;
-            this.time1.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
+            this.workedTime.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
 
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
-            this.time1.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
+            this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
+        }
 
+        private void readingSettings()
+        {
+            string settingsFile = MY_DOC_PATH + @"\ReportKeeperSettings.csv";
+            if (File.Exists(settingsFile))
+            {
+                string[] settings = File.ReadAllLines(settingsFile);
+                foreach (string settingValue in settings)
+                {
+                    if (settingValue.StartsWith(PROJECT_SETTING_NAME))
+                    {
+                        string[] projectSetting = settingValue.Split(',');
+                        for (int i = 1; i < projectSetting.Length; i++)
+                        {
+                            this.projectTaskComboBox.Items.Add(projectSetting[i]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                string projectSetting = PROJECT_SETTING_NAME;
+                foreach(string projectName in DEFAULT_PROJECTS)
+                {
+                    projectSetting = projectSetting + "," + projectName;
+                    this.projectTaskComboBox.Items.Add(projectName);
+                }
+
+                string[] newSettings = { projectSetting };
+                File.AppendAllLines(settingsFile, newSettings);
+            }
         }
     }
 }
