@@ -62,16 +62,30 @@ namespace ReportKeeperApplication
                             + this.date.Text + ","
                             + this.date.Text };
 
-                File.AppendAllLines(MY_DOC_PATH + @"\timereport.csv", newReportRecord);
+                try
+                {
+                    File.AppendAllLines(MY_DOC_PATH + @"\timereport.csv", newReportRecord);
 
-                this.desc.Text = "";
-                this.time.Text = "1.0";
-                this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
-                this.WindowState = FormWindowState.Minimized;
-                this._start = DateTime.Now;
+                    this.desc.Text = "";
+                    this.time.Text = "1.0";
+                    this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
+                    this.WindowState = FormWindowState.Minimized;
+                    this._start = DateTime.Now;
 
-                trackedCounter += float.Parse(taskDuration);
-                this.trackedTime.Text = trackedCounter.ToString();
+                    trackedCounter += float.Parse(taskDuration);
+                    this.trackedTime.Text = trackedCounter.ToString();
+
+                    this.timer1.Enabled = false;
+                    this.timer1.Enabled = true;
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Error of record saving. Try to close report file and save record again.\r\n" + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Unknown error.\r\n" + ex.Message);
+                }
             }
         }
 
