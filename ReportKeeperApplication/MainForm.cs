@@ -64,7 +64,8 @@ namespace ReportKeeperApplication
 
                 try
                 {
-                    File.AppendAllLines(MY_DOC_PATH + @"\timereport.csv", newReportRecord);
+                    string currentMonth = this._start_day.Month < 10 ? "0" + this._start_day.Month : this._start_day.Month.ToString();
+                    File.AppendAllLines(MY_DOC_PATH + @"\timereport-" + currentMonth + "-" + this._start_day.Year + ".csv", newReportRecord);
 
                     this.desc.Text = "";
                     this.time.Text = "1.0";
@@ -104,9 +105,6 @@ namespace ReportKeeperApplication
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            TimeSpan elapsed = DateTime.Now - this._start;
-            this.workedTime.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
-
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
             this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
         }
