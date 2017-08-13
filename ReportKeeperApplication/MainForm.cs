@@ -34,19 +34,41 @@ namespace ReportKeeperApplication
         {
             InitializeComponent();
             this.ShowInTaskbar = false;
-            this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
-            _start_day = DateTime.Now;
-            _start = DateTime.Now;
 
             this.readingSettings();
-
-            this.time.Text = "1.0";
 
             this.timer1.Interval = 3600000;
             this.timer1.Start();
 
             this.timer2.Interval = 60000;
             this.timer2.Start();
+
+            this.startNewDay();
+        }
+
+        private void startNewDay()
+        {
+            this.trackedCounter = 0;
+            _start_day = DateTime.Now;            
+            this.workedTime.Text = "0:00";
+
+            this.resetFields();
+
+            this.timer2.Enabled = false;
+            this.timer2.Enabled = true;
+        }
+
+        private void resetFields()
+        {
+            this.desc.Text = "";
+            this.time.Text = "1.0";
+            this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
+            this._start = DateTime.Now;
+
+            this.timer1.Enabled = false;
+            this.timer1.Enabled = true;
+
+            this.trackedTime.Text = trackedCounter.ToString();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -67,17 +89,10 @@ namespace ReportKeeperApplication
                     string currentMonth = this._start_day.Month < 10 ? "0" + this._start_day.Month : this._start_day.Month.ToString();
                     File.AppendAllLines(MY_DOC_PATH + @"\timereport-" + currentMonth + "-" + this._start_day.Year + ".csv", newReportRecord);
 
-                    this.desc.Text = "";
-                    this.time.Text = "1.0";
-                    this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
                     this.WindowState = FormWindowState.Minimized;
-                    this._start = DateTime.Now;
+                    this.trackedCounter += float.Parse(taskDuration);
 
-                    trackedCounter += float.Parse(taskDuration);
-                    this.trackedTime.Text = trackedCounter.ToString();
-
-                    this.timer1.Enabled = false;
-                    this.timer1.Enabled = true;
+                    this.resetFields();                    
                 }
                 catch (IOException ex)
                 {
@@ -105,6 +120,8 @@ namespace ReportKeeperApplication
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            TimeSpan elapsed = DateTime.Now - this._start;
+            this.time.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
             this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
         }
@@ -138,6 +155,14 @@ namespace ReportKeeperApplication
 
                 string[] newSettings = { projectSetting };
                 File.AppendAllLines(settingsFile, newSettings);
+            }
+        }
+
+        private void workedLabel_Click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                this.startNewDay();
             }
         }
     }

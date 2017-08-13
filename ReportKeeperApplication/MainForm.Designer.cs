@@ -135,6 +135,7 @@ namespace ReportKeeperApplication
             this.WorkedLabel.Size = new System.Drawing.Size(63, 17);
             this.WorkedLabel.TabIndex = 9;
             this.WorkedLabel.Text = "Worked:";
+            this.WorkedLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.workedLabel_Click);
             // 
             // TrackedLabel
             // 
