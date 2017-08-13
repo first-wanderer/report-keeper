@@ -12,6 +12,7 @@ namespace ReportKeeperApplication
         private const int CP_NOCLOSE_BUTTON = 0x200;
         private const string PROJECT_SETTING_NAME = "Projects:";
         private string MY_DOC_PATH = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string reportFilePath = null;
         private float trackedCounter = 0;
         private string[] DEFAULT_PROJECTS = { "Internal.Communication",
                                                 "Internal.Development",
@@ -48,8 +49,10 @@ namespace ReportKeeperApplication
 
         private void startNewDay()
         {
+            _start_day = DateTime.Now;
+            this.reportFilePath = MY_DOC_PATH + @"\timereport-" + this._start_day.Month.ToString("00") + "-" + this._start_day.Year + ".csv";
+
             this.trackedCounter = 0;
-            _start_day = DateTime.Now;            
             this.workedTime.Text = "0:00";
 
             this.resetFields();
@@ -62,13 +65,13 @@ namespace ReportKeeperApplication
         {
             this.desc.Text = "";
             this.time.Text = "1.0";
-            this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
+            this.date.Text = this._start_day.Month + "/" + this._start_day.Day + "/" + this._start_day.Year;
             this._start = DateTime.Now;
 
             this.timer1.Enabled = false;
             this.timer1.Enabled = true;
 
-            this.trackedTime.Text = trackedCounter.ToString();
+            this.trackedTime.Text = this.trackedCounter.ToString();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -86,13 +89,12 @@ namespace ReportKeeperApplication
 
                 try
                 {
-                    string currentMonth = this._start_day.Month < 10 ? "0" + this._start_day.Month : this._start_day.Month.ToString();
-                    File.AppendAllLines(MY_DOC_PATH + @"\timereport-" + currentMonth + "-" + this._start_day.Year + ".csv", newReportRecord);
+                    File.AppendAllLines(this.reportFilePath, newReportRecord);
 
                     this.WindowState = FormWindowState.Minimized;
                     this.trackedCounter += float.Parse(taskDuration);
 
-                    this.resetFields();                    
+                    this.resetFields();
                 }
                 catch (IOException ex)
                 {
@@ -163,6 +165,43 @@ namespace ReportKeeperApplication
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 this.startNewDay();
+            }
+        }
+
+        private void trackedLabel_Click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                float newTrackedTime = 0;
+                if (File.Exists(this.reportFilePath))
+                {
+                    try
+                    {
+                        string[] reports = File.ReadAllLines(this.reportFilePath);
+                        foreach (string reportRecord in reports)
+                        {
+                            string[] recordValues = reportRecord.Split(',');
+                            if (recordValues[3] == this.date.Text)
+                            {
+                                newTrackedTime += float.Parse(recordValues[1]);
+                            }
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show("Error of record reading. Try to close report file and update tracked time again.\r\n" + ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Unknown error.\r\n" + ex.Message);
+                    }
+                }
+
+                if(newTrackedTime > 0)
+                {
+                    this.trackedCounter = newTrackedTime;
+                    this.trackedTime.Text = this.trackedCounter.ToString();
+                }
             }
         }
     }
