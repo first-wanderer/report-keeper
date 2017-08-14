@@ -124,7 +124,7 @@ namespace ReportKeeperApplication
             this.trackedTime.Name = "trackedTime";
             this.trackedTime.Size = new System.Drawing.Size(32, 35);
             this.trackedTime.TabIndex = 8;
-            this.trackedTime.Text = "0";
+            this.trackedTime.Text = "0.0";
             // 
             // WorkedLabel
             // 
@@ -135,6 +135,7 @@ namespace ReportKeeperApplication
             this.WorkedLabel.Size = new System.Drawing.Size(63, 17);
             this.WorkedLabel.TabIndex = 9;
             this.WorkedLabel.Text = "Worked:";
+            this.WorkedLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.workedLabel_Click);
             // 
             // TrackedLabel
             // 
@@ -145,6 +146,7 @@ namespace ReportKeeperApplication
             this.TrackedLabel.Size = new System.Drawing.Size(64, 17);
             this.TrackedLabel.TabIndex = 10;
             this.TrackedLabel.Text = "Tracked:";
+            this.TrackedLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trackedLabel_Click);
             // 
             // MainForm
             // 

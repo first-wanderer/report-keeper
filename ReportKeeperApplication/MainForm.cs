@@ -12,6 +12,7 @@ namespace ReportKeeperApplication
         private const int CP_NOCLOSE_BUTTON = 0x200;
         private const string PROJECT_SETTING_NAME = "Projects:";
         private string MY_DOC_PATH = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string reportFilePath = null;
         private float trackedCounter = 0;
         private string[] DEFAULT_PROJECTS = { "Internal.Communication",
                                                 "Internal.Development",
@@ -34,19 +35,43 @@ namespace ReportKeeperApplication
         {
             InitializeComponent();
             this.ShowInTaskbar = false;
-            this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
-            _start_day = DateTime.Now;
-            _start = DateTime.Now;
 
             this.readingSettings();
-
-            this.time.Text = "1.0";
 
             this.timer1.Interval = 3600000;
             this.timer1.Start();
 
             this.timer2.Interval = 60000;
             this.timer2.Start();
+
+            this.startNewDay();
+        }
+
+        private void startNewDay()
+        {
+            _start_day = DateTime.Now;
+            this.reportFilePath = MY_DOC_PATH + @"\timereport-" + this._start_day.Month.ToString("00") + "-" + this._start_day.Year + ".csv";
+
+            this.trackedCounter = 0;
+            this.workedTime.Text = "0:00";
+
+            this.resetFields();
+
+            this.timer2.Enabled = false;
+            this.timer2.Enabled = true;
+        }
+
+        private void resetFields()
+        {
+            this.desc.Text = "";
+            this.time.Text = "1.0";
+            this.date.Text = this._start_day.Month + "/" + this._start_day.Day + "/" + this._start_day.Year;
+            this._start = DateTime.Now;
+
+            this.timer1.Enabled = false;
+            this.timer1.Enabled = true;
+
+            this.trackedTime.Text = this.trackedCounter.ToString();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -62,16 +87,23 @@ namespace ReportKeeperApplication
                             + this.date.Text + ","
                             + this.date.Text };
 
-                File.AppendAllLines(MY_DOC_PATH + @"\timereport.csv", newReportRecord);
+                try
+                {
+                    File.AppendAllLines(this.reportFilePath, newReportRecord);
 
-                this.desc.Text = "";
-                this.time.Text = "1.0";
-                this.date.Text = DateTime.Now.Month + "/" + DateTime.Now.Day + "/" + DateTime.Now.Year;
-                this.WindowState = FormWindowState.Minimized;
-                this._start = DateTime.Now;
+                    this.WindowState = FormWindowState.Minimized;
+                    this.trackedCounter += float.Parse(taskDuration);
 
-                trackedCounter += float.Parse(taskDuration);
-                this.trackedTime.Text = trackedCounter.ToString();
+                    this.resetFields();
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Error of record saving. Try to close report file and save record again.\r\n" + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Unknown error.\r\n" + ex.Message);
+                }
             }
         }
 
@@ -91,8 +123,7 @@ namespace ReportKeeperApplication
         private void timer2_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsed = DateTime.Now - this._start;
-            this.workedTime.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
-
+            this.time.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
             this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
         }
@@ -126,6 +157,51 @@ namespace ReportKeeperApplication
 
                 string[] newSettings = { projectSetting };
                 File.AppendAllLines(settingsFile, newSettings);
+            }
+        }
+
+        private void workedLabel_Click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                this.startNewDay();
+            }
+        }
+
+        private void trackedLabel_Click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                float newTrackedTime = 0;
+                if (File.Exists(this.reportFilePath))
+                {
+                    try
+                    {
+                        string[] reports = File.ReadAllLines(this.reportFilePath);
+                        foreach (string reportRecord in reports)
+                        {
+                            string[] recordValues = reportRecord.Split(',');
+                            if (recordValues[3] == this.date.Text)
+                            {
+                                newTrackedTime += float.Parse(recordValues[1]);
+                            }
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show("Error of record reading. Try to close report file and update tracked time again.\r\n" + ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Unknown error.\r\n" + ex.Message);
+                    }
+                }
+
+                if(newTrackedTime > 0)
+                {
+                    this.trackedCounter = newTrackedTime;
+                    this.trackedTime.Text = this.trackedCounter.ToString();
+                }
             }
         }
     }
