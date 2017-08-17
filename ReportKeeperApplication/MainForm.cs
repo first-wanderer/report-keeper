@@ -34,7 +34,6 @@ namespace ReportKeeperApplication
         public MainForm()
         {
             InitializeComponent();
-            this.ShowInTaskbar = false;
 
             this.readingSettings();
 
@@ -91,7 +90,7 @@ namespace ReportKeeperApplication
                 {
                     File.AppendAllLines(this.reportFilePath, newReportRecord);
 
-                    this.WindowState = FormWindowState.Minimized;
+                    this.Visible = false;
                     this.trackedCounter += float.Parse(taskDuration);
 
                     this.resetFields();
@@ -109,7 +108,7 @@ namespace ReportKeeperApplication
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Normal;
+            this.Visible = true;
             this.BringToFront();
             this.Focus();
             this.Activate();
@@ -203,6 +202,17 @@ namespace ReportKeeperApplication
                     this.trackedTime.Text = this.trackedCounter.ToString();
                 }
             }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            // Trap WM_SYSCOMMAND, SC_MINIMIZE
+            if (m.Msg == 0x112 && m.WParam.ToInt32() == 0xf020)
+            {
+                this.Visible = false;
+                return;
+            }
+            base.WndProc(ref m);
         }
     }
 }
