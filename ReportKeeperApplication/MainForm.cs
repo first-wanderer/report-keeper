@@ -10,17 +10,9 @@ namespace ReportKeeperApplication
         DateTime _start;
         DateTime _start_day;
         private const int CP_NOCLOSE_BUTTON = 0x200;
-        private const string PROJECT_SETTING_NAME = "Projects:";
         private string MY_DOC_PATH = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private string reportFilePath = null;
         private float trackedCounter = 0;
-        private string[] DEFAULT_PROJECTS = { "Internal.Communication",
-                                                "Internal.Development",
-                                                "Internal.Investigation",
-                                                "Internal.Testing",
-                                                "Internal.Estimation",
-                                                "Internal.Administration",
-                                                "Internal.Code review" };
 
         protected override CreateParams CreateParams
         {
@@ -113,7 +105,8 @@ namespace ReportKeeperApplication
             this.Focus();
             this.Activate();
             TimeSpan elapsed = DateTime.Now - this._start;
-            this.time.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
+            var minutes = this.realTimeToolStripMenuItem.Checked ? elapsed.Minutes.ToString("D2") : (elapsed.Minutes / 6).ToString();
+            this.time.Text = elapsed.Hours + "." + minutes;
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
             this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
         }
@@ -122,41 +115,18 @@ namespace ReportKeeperApplication
         private void timer2_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsed = DateTime.Now - this._start;
-            this.time.Text = elapsed.Hours + "." + elapsed.Minutes.ToString("D2");
+            var minutes = this.realTimeToolStripMenuItem.Checked ? elapsed.Minutes.ToString("D2") : (elapsed.Minutes / 6).ToString();
+            this.time.Text = elapsed.Hours + "." + minutes;
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
             this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
         }
 
         private void readingSettings()
         {
-            string settingsFile = MY_DOC_PATH + @"\ReportKeeperSettings.csv";
-            if (File.Exists(settingsFile))
-            {
-                string[] settings = File.ReadAllLines(settingsFile);
-                foreach (string settingValue in settings)
-                {
-                    if (settingValue.StartsWith(PROJECT_SETTING_NAME))
-                    {
-                        string[] projectSetting = settingValue.Split(',');
-                        for (int i = 1; i < projectSetting.Length; i++)
-                        {
-                            this.projectTaskComboBox.Items.Add(projectSetting[i]);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                string projectSetting = PROJECT_SETTING_NAME;
-                foreach(string projectName in DEFAULT_PROJECTS)
-                {
-                    projectSetting = projectSetting + "," + projectName;
-                    this.projectTaskComboBox.Items.Add(projectName);
-                }
-
-                string[] newSettings = { projectSetting };
-                File.AppendAllLines(settingsFile, newSettings);
-            }
+            this.projectTaskComboBox.Items.Clear();
+            string[] projects = Properties.Settings.Default.defaultProjects.Split(',');
+            this.projectTaskComboBox.Items.AddRange(projects);
+            this.realTimeToolStripMenuItem.Checked = Properties.Settings.Default.realTime;
         }
 
         private void workedLabel_Click(object sender, MouseEventArgs e)
@@ -213,6 +183,42 @@ namespace ReportKeeperApplication
                 return;
             }
             base.WndProc(ref m);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (!this.Visible)
+                {
+                    timer1_Tick(sender, e);
+                }
+                else
+                {
+                    this.Visible = false;
+                }
+            }
+        }
+
+        private void realTimeToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.realTime != this.realTimeToolStripMenuItem.Checked)
+            {
+                Properties.Settings.Default.realTime = this.realTimeToolStripMenuItem.Checked;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void projectsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Action updateSettings = readingSettings;
+            settingsChangeForm changeProjectsForm = new settingsChangeForm(updateSettings);
+            changeProjectsForm.Show();
         }
     }
 }
