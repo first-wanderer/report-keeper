@@ -146,11 +146,13 @@ namespace ReportKeeperApplication
                 {
                     try
                     {
+                        string currentDay = this.date.Text.Split('/')[1];
                         string[] reports = File.ReadAllLines(this.reportFilePath);
                         foreach (string reportRecord in reports)
                         {
                             string[] recordValues = reportRecord.Split(',');
-                            if (recordValues[3] == this.date.Text)
+                            string recordDay = recordValues[recordValues.Length-1].Split('/')[1];
+                            if (recordDay == currentDay)
                             {
                                 newTrackedTime += float.Parse(recordValues[1]);
                             }
