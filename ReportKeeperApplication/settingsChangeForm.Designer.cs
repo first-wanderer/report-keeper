@@ -70,6 +70,7 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.textBoxSettings);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "settingsChangeForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

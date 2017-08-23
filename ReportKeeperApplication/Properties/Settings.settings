@@ -8,5 +8,8 @@
     <Setting Name="defaultProjects" Type="System.String" Scope="User">
       <Value Profile="(Default)">Internal.Communication,Internal.Development,Internal.Investigation,Internal.Testing,Internal.Estimation,Internal.Administration,Internal.Code review</Value>
     </Setting>
+    <Setting Name="topMost" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -127,6 +127,8 @@ namespace ReportKeeperApplication
             string[] projects = Properties.Settings.Default.defaultProjects.Split(',');
             this.projectTaskComboBox.Items.AddRange(projects);
             this.realTimeToolStripMenuItem.Checked = Properties.Settings.Default.realTime;
+            this.topMostToolStripMenuItem.Checked = Properties.Settings.Default.topMost;
+            this.TopMost = Properties.Settings.Default.topMost;
         }
 
         private void workedLabel_Click(object sender, MouseEventArgs e)
@@ -221,6 +223,16 @@ namespace ReportKeeperApplication
             Action updateSettings = readingSettings;
             settingsChangeForm changeProjectsForm = new settingsChangeForm(updateSettings);
             changeProjectsForm.Show();
+        }
+
+        private void topMostToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.topMost != this.topMostToolStripMenuItem.Checked)
+            {
+                Properties.Settings.Default.topMost = this.topMostToolStripMenuItem.Checked;
+                Properties.Settings.Default.Save();
+                this.TopMost = Properties.Settings.Default.topMost;
+            }
         }
     }
 }
