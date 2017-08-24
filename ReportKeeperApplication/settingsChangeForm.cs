@@ -18,6 +18,7 @@ namespace ReportKeeperApplication
         {
             InitializeComponent();
             this.textBoxSettings.Text = Properties.Settings.Default.defaultProjects;
+            this.textBoxPath.Text = Properties.Settings.Default.defaultPath;
             updateSettings = sender;
         }
 
@@ -31,6 +32,7 @@ namespace ReportKeeperApplication
                 defaultProjects += project.Trim() + ",";
             }        
             Properties.Settings.Default.defaultProjects = defaultProjects.TrimEnd(',');
+            Properties.Settings.Default.defaultPath = textBoxPath.Text;
             Properties.Settings.Default.Save();
             updateSettings();
             this.Close();

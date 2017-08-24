@@ -41,7 +41,14 @@ namespace ReportKeeperApplication
         private void startNewDay()
         {
             _start_day = DateTime.Now;
-            this.reportFilePath = MY_DOC_PATH + @"\timereport-" + this._start_day.Month.ToString("00") + "-" + this._start_day.Year + ".csv";
+            if (string.IsNullOrEmpty(Properties.Settings.Default.defaultPath))
+            {
+                this.reportFilePath = MY_DOC_PATH + @"\timereport-" + this._start_day.Month.ToString("00") + "-" + this._start_day.Year + ".csv";
+            }
+            else
+            {
+                this.reportFilePath = Properties.Settings.Default.defaultPath + @"\timereport-" + this._start_day.Month.ToString("00") + "-" + this._start_day.Year + ".csv";
+            }
 
             this.trackedCounter = 0;
             this.workedTime.Text = "0:00";

@@ -83,7 +83,7 @@ namespace ReportKeeperApplication
             // 
             this.projectsToolStripMenuItem.Name = "projectsToolStripMenuItem";
             this.projectsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.projectsToolStripMenuItem.Text = "Change projects";
+            this.projectsToolStripMenuItem.Text = "Change projects and path";
             this.projectsToolStripMenuItem.Click += new System.EventHandler(this.projectsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem

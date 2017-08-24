@@ -31,19 +31,20 @@
             this.textBoxSettings = new System.Windows.Forms.TextBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.textBoxPath = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxSettings
             // 
-            this.textBoxSettings.Location = new System.Drawing.Point(-1, -1);
+            this.textBoxSettings.Location = new System.Drawing.Point(12, 12);
             this.textBoxSettings.Multiline = true;
             this.textBoxSettings.Name = "textBoxSettings";
-            this.textBoxSettings.Size = new System.Drawing.Size(520, 133);
+            this.textBoxSettings.Size = new System.Drawing.Size(493, 80);
             this.textBoxSettings.TabIndex = 0;
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(42, 138);
+            this.saveButton.Location = new System.Drawing.Point(42, 126);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(172, 33);
             this.saveButton.TabIndex = 1;
@@ -53,7 +54,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(301, 138);
+            this.cancelButton.Location = new System.Drawing.Point(300, 126);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(172, 33);
             this.cancelButton.TabIndex = 2;
@@ -61,12 +62,20 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
+            // textBoxPath
+            // 
+            this.textBoxPath.Location = new System.Drawing.Point(12, 98);
+            this.textBoxPath.Name = "textBoxPath";
+            this.textBoxPath.Size = new System.Drawing.Size(493, 20);
+            this.textBoxPath.TabIndex = 3;
+            // 
             // settingsChangeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(517, 183);
+            this.ClientSize = new System.Drawing.Size(517, 171);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxPath);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.textBoxSettings);
@@ -85,5 +94,6 @@
         private System.Windows.Forms.TextBox textBoxSettings;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.TextBox textBoxPath;
     }
 }
