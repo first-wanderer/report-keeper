@@ -36,9 +36,9 @@ namespace ReportKeeperApplication
             this.toolStripMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.realTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.time = new System.Windows.Forms.TextBox();
-            this.desc = new System.Windows.Forms.TextBox();
             this.date = new System.Windows.Forms.TextBox();
             this.projectTaskComboBox = new System.Windows.Forms.ComboBox();
             this.saveButton = new System.Windows.Forms.Button();
@@ -49,7 +49,8 @@ namespace ReportKeeperApplication
             this.trackedTime = new System.Windows.Forms.Label();
             this.WorkedLabel = new System.Windows.Forms.Label();
             this.TrackedLabel = new System.Windows.Forms.Label();
-            this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.desc = new System.Windows.Controls.TextBox();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +60,7 @@ namespace ReportKeeperApplication
             this.toolStripMenuSettings,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(117, 48);
             // 
             // toolStripMenuSettings
             // 
@@ -68,28 +69,36 @@ namespace ReportKeeperApplication
             this.projectsToolStripMenuItem,
             this.topMostToolStripMenuItem});
             this.toolStripMenuSettings.Name = "toolStripMenuSettings";
-            this.toolStripMenuSettings.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuSettings.Size = new System.Drawing.Size(116, 22);
             this.toolStripMenuSettings.Text = "Settings";
             // 
             // realTimeToolStripMenuItem
             // 
             this.realTimeToolStripMenuItem.CheckOnClick = true;
             this.realTimeToolStripMenuItem.Name = "realTimeToolStripMenuItem";
-            this.realTimeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.realTimeToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.realTimeToolStripMenuItem.Text = "Real time";
             this.realTimeToolStripMenuItem.CheckedChanged += new System.EventHandler(this.realTimeToolStripMenuItem_CheckedChanged);
             // 
             // projectsToolStripMenuItem
             // 
             this.projectsToolStripMenuItem.Name = "projectsToolStripMenuItem";
-            this.projectsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.projectsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.projectsToolStripMenuItem.Text = "Change projects and path";
             this.projectsToolStripMenuItem.Click += new System.EventHandler(this.projectsToolStripMenuItem_Click);
+            // 
+            // topMostToolStripMenuItem
+            // 
+            this.topMostToolStripMenuItem.CheckOnClick = true;
+            this.topMostToolStripMenuItem.Name = "topMostToolStripMenuItem";
+            this.topMostToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.topMostToolStripMenuItem.Text = "Top most";
+            this.topMostToolStripMenuItem.CheckedChanged += new System.EventHandler(this.topMostToolStripMenuItem_CheckedChanged);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -99,13 +108,6 @@ namespace ReportKeeperApplication
             this.time.Name = "time";
             this.time.Size = new System.Drawing.Size(47, 20);
             this.time.TabIndex = 2;
-            // 
-            // desc
-            // 
-            this.desc.Location = new System.Drawing.Point(12, 39);
-            this.desc.Name = "desc";
-            this.desc.Size = new System.Drawing.Size(349, 20);
-            this.desc.TabIndex = 3;
             // 
             // date
             // 
@@ -164,7 +166,7 @@ namespace ReportKeeperApplication
             this.trackedTime.Font = new System.Drawing.Font("Arial", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.trackedTime.Location = new System.Drawing.Point(548, 22);
             this.trackedTime.Name = "trackedTime";
-            this.trackedTime.Size = new System.Drawing.Size(32, 35);
+            this.trackedTime.Size = new System.Drawing.Size(57, 35);
             this.trackedTime.TabIndex = 8;
             this.trackedTime.Text = "0.0";
             // 
@@ -190,20 +192,23 @@ namespace ReportKeeperApplication
             this.TrackedLabel.Text = "Tracked:";
             this.TrackedLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trackedLabel_Click);
             // 
-            // topMostToolStripMenuItem
+            // elementHost1
             // 
-            this.topMostToolStripMenuItem.CheckOnClick = true;
-            this.topMostToolStripMenuItem.Name = "topMostToolStripMenuItem";
-            this.topMostToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.topMostToolStripMenuItem.Text = "Top most";
-            this.topMostToolStripMenuItem.CheckedChanged += new System.EventHandler(this.topMostToolStripMenuItem_CheckedChanged);
+            this.elementHost1.Location = new System.Drawing.Point(12, 39);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(349, 20);
+            this.elementHost1.TabIndex = 11;
+            this.elementHost1.Text = "elementHost1";
+            this.desc.SpellCheck.IsEnabled = true;
+            this.elementHost1.Child = this.desc;
             // 
             // MainForm
             // 
             this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 69);
+            this.ClientSize = new System.Drawing.Size(625, 66);
+            this.Controls.Add(this.elementHost1);
             this.Controls.Add(this.TrackedLabel);
             this.Controls.Add(this.WorkedLabel);
             this.Controls.Add(this.trackedTime);
@@ -211,7 +216,6 @@ namespace ReportKeeperApplication
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.projectTaskComboBox);
             this.Controls.Add(this.date);
-            this.Controls.Add(this.desc);
             this.Controls.Add(this.time);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -229,7 +233,6 @@ namespace ReportKeeperApplication
 
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TextBox time;
-        private System.Windows.Forms.TextBox desc;
         private System.Windows.Forms.TextBox date;
         private System.Windows.Forms.ComboBox projectTaskComboBox;
         private System.Windows.Forms.Button saveButton;
@@ -245,6 +248,8 @@ namespace ReportKeeperApplication
         private System.Windows.Forms.ToolStripMenuItem realTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem topMostToolStripMenuItem;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private System.Windows.Controls.TextBox desc;
     }
 }
 
