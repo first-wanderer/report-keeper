@@ -63,7 +63,7 @@ namespace ReportKeeperApplication
         {
             this.desc.Text = "";
             this.time.Text = "1.0";
-            this.date.Text = this._start_day.Month + "/" + this._start_day.Day + "/" + this._start_day.Year;
+            this.date.Text = this._start_day.Month.ToString("00") + "/" + this._start_day.Day.ToString("00") + "/" + this._start_day.Year;
             this._start = DateTime.Now;
 
             this.timer1.Enabled = false;
@@ -121,9 +121,13 @@ namespace ReportKeeperApplication
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            TimeSpan elapsed = DateTime.Now - this._start;
-            var minutes = this.realTimeToolStripMenuItem.Checked ? elapsed.Minutes.ToString("D2") : (elapsed.Minutes / 6).ToString();
-            this.time.Text = elapsed.Hours + "." + minutes;
+            if(Form.ActiveForm == null)
+            {
+                TimeSpan elapsed = DateTime.Now - this._start;
+                var minutes = this.realTimeToolStripMenuItem.Checked ? elapsed.Minutes.ToString("D2") : (elapsed.Minutes / 6).ToString();
+                this.time.Text = elapsed.Hours + "." + minutes;
+            }
+
             TimeSpan elapsed_day = DateTime.Now - this._start_day;
             this.workedTime.Text = elapsed_day.Hours + ":" + elapsed_day.Minutes.ToString("D2");
         }
