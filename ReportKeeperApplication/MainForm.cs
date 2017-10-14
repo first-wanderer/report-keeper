@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Globalization;
 
 
 namespace ReportKeeperApplication
@@ -40,14 +41,16 @@ namespace ReportKeeperApplication
 
         private void startNewDay()
         {
-            _start_day = DateTime.Now;
+            this._start_day = DateTime.Now;
+            string fileTimeModificator = this.newFileEveryWeekToolStripMenuItem.Checked ? this._start_day.Year + "-" + this._start_day.Month.ToString("00") + "-" + this.getWeekNumberOfMonth(this._start_day).ToString() : this._start_day.Month.ToString("00") + "-" + this._start_day.Year;
+
             if (string.IsNullOrEmpty(Properties.Settings.Default.defaultPath))
             {
-                this.reportFilePath = MY_DOC_PATH + @"\timereport-" + this._start_day.Month.ToString("00") + "-" + this._start_day.Year + ".csv";
+                this.reportFilePath = MY_DOC_PATH + @"\timereport-" + fileTimeModificator + ".csv";
             }
             else
             {
-                this.reportFilePath = Properties.Settings.Default.defaultPath + @"\timereport-" + this._start_day.Month.ToString("00") + "-" + this._start_day.Year + ".csv";
+                this.reportFilePath = Properties.Settings.Default.defaultPath + @"\timereport-" + fileTimeModificator + ".csv";
             }
 
             this.trackedCounter = 0;
@@ -140,6 +143,7 @@ namespace ReportKeeperApplication
             this.realTimeToolStripMenuItem.Checked = Properties.Settings.Default.realTime;
             this.topMostToolStripMenuItem.Checked = Properties.Settings.Default.topMost;
             this.TopMost = Properties.Settings.Default.topMost;
+            this.newFileEveryWeekToolStripMenuItem.Checked = Properties.Settings.Default.newFileEveryWeek;
         }
 
         private void workedLabel_Click(object sender, MouseEventArgs e)
@@ -220,6 +224,16 @@ namespace ReportKeeperApplication
             }
         }
 
+        private int getWeekNumberOfMonth(DateTime date)
+        {
+            DateTime tempdate = date.AddDays(-date.Day + 1);
+            CultureInfo ciCurr = CultureInfo.CurrentCulture;
+            int weekNumStart = ciCurr.Calendar.GetWeekOfYear(tempdate, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            int weekNum = ciCurr.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            return weekNum - weekNumStart + 1;
+        }
+
         private void realTimeToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.realTime != this.realTimeToolStripMenuItem.Checked)
@@ -243,6 +257,15 @@ namespace ReportKeeperApplication
                 Properties.Settings.Default.topMost = this.topMostToolStripMenuItem.Checked;
                 Properties.Settings.Default.Save();
                 this.TopMost = Properties.Settings.Default.topMost;
+            }
+        }
+
+        private void newFileEveryWeekToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.newFileEveryWeek != this.newFileEveryWeekToolStripMenuItem.Checked)
+            {
+                Properties.Settings.Default.newFileEveryWeek = this.newFileEveryWeekToolStripMenuItem.Checked;
+                Properties.Settings.Default.Save();
             }
         }
     }

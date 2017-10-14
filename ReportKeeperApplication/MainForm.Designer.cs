@@ -37,6 +37,7 @@ namespace ReportKeeperApplication
             this.realTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newFileEveryWeekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.time = new System.Windows.Forms.TextBox();
             this.date = new System.Windows.Forms.TextBox();
@@ -67,7 +68,8 @@ namespace ReportKeeperApplication
             this.toolStripMenuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.realTimeToolStripMenuItem,
             this.projectsToolStripMenuItem,
-            this.topMostToolStripMenuItem});
+            this.topMostToolStripMenuItem,
+            this.newFileEveryWeekToolStripMenuItem});
             this.toolStripMenuSettings.Name = "toolStripMenuSettings";
             this.toolStripMenuSettings.Size = new System.Drawing.Size(116, 22);
             this.toolStripMenuSettings.Text = "Settings";
@@ -94,6 +96,14 @@ namespace ReportKeeperApplication
             this.topMostToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.topMostToolStripMenuItem.Text = "Top most";
             this.topMostToolStripMenuItem.CheckedChanged += new System.EventHandler(this.topMostToolStripMenuItem_CheckedChanged);
+            // 
+            // newFileEveryWeekToolStripMenuItem
+            // 
+            this.newFileEveryWeekToolStripMenuItem.CheckOnClick = true;
+            this.newFileEveryWeekToolStripMenuItem.Name = "newFileEveryWeekToolStripMenuItem";
+            this.newFileEveryWeekToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.newFileEveryWeekToolStripMenuItem.Text = "Start new file every week";
+            this.newFileEveryWeekToolStripMenuItem.CheckedChanged += new System.EventHandler(this.newFileEveryWeekToolStripMenuItem_CheckedChanged);
             // 
             // exitToolStripMenuItem
             // 
@@ -248,6 +258,7 @@ namespace ReportKeeperApplication
         private System.Windows.Forms.ToolStripMenuItem realTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem topMostToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newFileEveryWeekToolStripMenuItem;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         private System.Windows.Controls.TextBox desc;
     }
